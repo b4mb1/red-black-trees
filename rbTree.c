@@ -189,7 +189,7 @@ void rb_transplant(RBtree * t, Node * rm, Node * rp) {
 }
 
 Node * tree_minimum(Node * entry, RBtree * t) {
-    while (entry->left != t->sentinel ) {
+    while (entry->left != t->sentinel) {
         entry = entry->left;     
     }
     return entry; 
@@ -251,6 +251,7 @@ void rb_delete_fixup (RBtree * t, Node * rp) {
             }
         }
     }
+    rp->color = 0;
 }
 
 Node * find_node(RBtree * t, int key) {
@@ -312,29 +313,29 @@ void rb_delete(RBtree * t, int node_with_key) {
 int main() {
     RBtree * tree = make_rbtree();
 
-    FILE* file = fopen ("test.txt", "r");
-    int i = 0;
+    FILE *file = fopen ("test.txt", "r");
+    int i;
 
-    fscanf (file, "%d", &i);    
+    fscanf (file, "%d", &i);      
     while (!feof (file))
     {  
         rb_insert(tree, i);
+        printf("Inserting node %d \n", i);
         fscanf (file, "%d", &i);      
+        print_rbtree(tree);
     }
     fclose (file);        
-    print_rbtree(tree);
     
     file = fopen ("test2.txt", "r");
-    i = 0;
-
     fscanf (file, "%d", &i);
     while (!feof (file))
     {
+        printf("Deleting node %d \n", i);
         rb_delete(tree, i);
         fscanf (file, "%d", &i);
-    }
-    fclose (file);
-    print_rbtree(tree);
+        print_rbtree(tree);
+    };
 
+    fclose (file);
     return 0;
 }
